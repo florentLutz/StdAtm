@@ -21,10 +21,6 @@ from scipy.constants import foot
 
 from ..atmosphere import Atmosphere, AtmosphereSI
 
-STEP = 1e-6
-STEP_FOOT = STEP / foot
-
-
 def test_atmosphere():
     """Tests properties of Atmosphere class."""
     # Altitudes in meters.
@@ -353,70 +349,11 @@ def atmosphere1(altitude):
     return atm
 
 
-@pytest.fixture(scope="session")
-def atmosphere_ft_1(altitude):
-    """
-    Define the same atmosphere but using altitude in feet to test the derivatives with respect to
-    the altitude in feet.
-    """
-    atm = Atmosphere(altitude / foot)
-    atm.true_airspeed = 200.0
-    return atm
-
-
-@pytest.fixture(scope="session")
-def atmosphere2(altitude):
-    """
-    Define a new atmosphere at the same altitude but with an additional step to test analytical
-    differentiation against finite differences.
-    """
-    atm = AtmosphereSI(altitude + STEP)
-    atm.true_airspeed = 200.0
-    return atm
-
-
-@pytest.fixture(scope="session")
-def atmosphere_ft_2(altitude):
-    """
-    Define the same atmosphere but using altitude in feet to test the derivatives with respect to
-    the altitude in feet.
-    """
-    atm = Atmosphere(altitude / foot + STEP / foot)
-    atm.true_airspeed = 200.0
-    return atm
-
-
 def test_performances_temperature_array(atmosphere1, benchmark):
     def func():
         _ = atmosphere1.temperature
 
     benchmark(func)
-
-
-def test_performances_partial_temperature_altitude_array(atmosphere1, benchmark):
-    def func():
-        _ = atmosphere1.partial_temperature_altitude
-
-    benchmark(func)
-
-
-def test_verify_partial_temperature_altitude(atmosphere1, atmosphere2):
-    analytical_diff = atmosphere1.partial_temperature_altitude
-    finite_diff = (atmosphere2.temperature - atmosphere1.temperature) / STEP
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
-
-
-def test_verify_partial_temperature_altitude_in_feet(atmosphere_ft_1, atmosphere_ft_2):
-    """
-    Verify that the partials are also correct when the altitude is given in feet. Not using the
-    altitude fixture nor creating new ones as they will only be used here.
-    """
-
-    analytical_diff = atmosphere_ft_1.partial_temperature_altitude
-    finite_diff = (atmosphere_ft_2.temperature - atmosphere_ft_1.temperature) / STEP_FOOT
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
 
 
 def test_performances_pressure_array(atmosphere1, benchmark):

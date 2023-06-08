@@ -104,7 +104,6 @@ class Atmosphere:
         # For convenience, let's have altitude as numpy arrays and in meters in all cases
         unit_coeff = foot if altitude_in_feet else 1.0
         self._altitude = np.asarray(altitude) * unit_coeff
-        self._unit_coeff = unit_coeff
 
         # Sets indices for tropopause
         self._idx_tropo = self._altitude < TROPOPAUSE
@@ -124,14 +123,6 @@ class Atmosphere:
         self._dynamic_pressure = None
         self._impact_pressure = None
         self._calibrated_airspeed = None
-
-        # Partial derivatives of outputs
-        self._partial_temperature_altitude = None
-        self._partial_pressure_altitude = None
-        self._partial_density_altitude = None
-        self._partial_speed_of_sound_altitude = None
-        self._partial_dynamic_viscosity_altitude = None
-        self._partial_kinematic_viscosity_altitude = None
 
     def get_altitude(self, altitude_in_feet: bool = True) -> Union[float, Sequence[float]]:
         """
@@ -162,13 +153,6 @@ class Atmosphere:
             )
             self._temperature[self._idx_strato] = 216.65 + self._delta_t
         return self._return_value(self._temperature)
-
-    @property
-    def partial_temperature_altitude(self) -> Union[float, Sequence[float]]:
-        if self._partial_temperature_altitude is None:
-            self._partial_temperature_altitude = np.zeros(self._altitude.shape)
-            self._partial_temperature_altitude[self._idx_tropo] = -0.0065 * self._unit_coeff
-        return self._return_value(self._partial_temperature_altitude)
 
     @property
     def pressure(self) -> Union[float, Sequence[float]]:
