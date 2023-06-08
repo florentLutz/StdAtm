@@ -114,7 +114,6 @@ class Atmosphere:
         self._pressure = None
         self._density = None
         self._speed_of_sound = None
-        self._dynamic_viscosity = None
         self._kinematic_viscosity = None
         self._mach = None
         self._equivalent_airspeed = None
