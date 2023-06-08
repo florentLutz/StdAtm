@@ -115,6 +115,7 @@ class Atmosphere:
         self._pressure = None
         self._density = None
         self._speed_of_sound = None
+        self._dynamic_viscosity = None
         self._kinematic_viscosity = None
         self._mach = None
         self._equivalent_airspeed = None
@@ -126,6 +127,11 @@ class Atmosphere:
 
         # Partial derivatives of outputs
         self._partial_temperature_altitude = None
+        self._partial_pressure_altitude = None
+        self._partial_density_altitude = None
+        self._partial_speed_of_sound_altitude = None
+        self._partial_dynamic_viscosity_altitude = None
+        self._partial_kinematic_viscosity_altitude = None
 
     def get_altitude(self, altitude_in_feet: bool = True) -> Union[float, Sequence[float]]:
         """
@@ -169,14 +175,36 @@ class Atmosphere:
         """Pressure in Pa."""
         if self._pressure is None:
             self._pressure = np.zeros(self._altitude.shape)
-            self._pressure[self._idx_tropo] = (
-                SEA_LEVEL_PRESSURE
-                * (1 - (self._altitude[self._idx_tropo] / 44330.78)) ** 5.25587611
+            self._pressure[self._idx_tropo] = SEA_LEVEL_PRESSURE * np.exp(
+                5.25587611 * np.log(1 - (self._altitude[self._idx_tropo] / 44330.78))
             )
-            self._pressure[self._idx_strato] = 22632 * 2.718281 ** (
-                1.7345725 - 0.0001576883 * self._altitude[self._idx_strato]
+            self._pressure[self._idx_strato] = 22632 * np.exp(
+                (1.7345725 - 0.0001576883 * self._altitude[self._idx_strato]) * np.log(2.718281)
             )
         return self._return_value(self._pressure)
+
+    @property
+    def partial_pressure_altitude(self) -> Union[float, Sequence[float]]:
+        """Pressure in Pa."""
+        if self._partial_pressure_altitude is None:
+            self._partial_pressure_altitude = np.zeros(self._altitude.shape)
+            self._partial_pressure_altitude[self._idx_tropo] = -(
+                SEA_LEVEL_PRESSURE
+                * 5.25587611
+                / 44330.78
+                * np.exp(4.25587611 * np.log(1 - (self._altitude[self._idx_tropo] / 44330.78)))
+                * self._unit_coeff
+            )
+            self._partial_pressure_altitude[self._idx_strato] = -(
+                22632
+                * 0.0001576883
+                * np.log(2.718281)
+                * np.exp(
+                    (1.7345725 - 0.0001576883 * self._altitude[self._idx_strato]) * np.log(2.718281)
+                )
+                * self._unit_coeff
+            )
+        return self._return_value(self._partial_pressure_altitude)
 
     @property
     def density(self) -> Union[float, Sequence[float]]:
@@ -186,21 +214,86 @@ class Atmosphere:
         return self._return_value(self._density)
 
     @property
+    def partial_density_altitude(self) -> Union[float, Sequence[float]]:
+        """Density in kg/m3."""
+        if self._partial_density_altitude is None:
+            self._partial_density_altitude = (
+                1.0
+                / AIR_GAS_CONSTANT
+                * (
+                    self.partial_pressure_altitude * self.temperature
+                    - self.partial_temperature_altitude * self.pressure
+                )
+                / self.temperature**2.0
+            )
+        return self._return_value(self._partial_density_altitude)
+
+    @property
     def speed_of_sound(self) -> Union[float, Sequence[float]]:
         """Speed of sound in m/s."""
         if self._speed_of_sound is None:
-            self._speed_of_sound = (1.4 * AIR_GAS_CONSTANT * self.temperature) ** 0.5
+            self._speed_of_sound = np.sqrt(1.4 * AIR_GAS_CONSTANT * self.temperature)
         return self._return_value(self._speed_of_sound)
+
+    @property
+    def partial_speed_of_sound_altitude(self) -> Union[float, Sequence[float]]:
+        """Speed of sound in m/s."""
+        if self._partial_speed_of_sound_altitude is None:
+            self._partial_speed_of_sound_altitude = (
+                0.5
+                * (1.4 * AIR_GAS_CONSTANT) ** 0.5
+                * 1.0
+                / np.sqrt(self.temperature)
+                * self.partial_temperature_altitude
+            )
+        # The correction for altitude is already included in the partial for temperature
+        return self._return_value(self._partial_speed_of_sound_altitude)
+
+    @property
+    def dynamic_viscosity(self) -> Union[float, Sequence[float]]:
+        """Dynamic viscosity in kg/m/s, computed using Sutherland equation"""
+        if self._dynamic_viscosity is None:
+            self._dynamic_viscosity = (
+                0.000017894
+                * SEA_LEVEL_TEMPERATURE ** (-3 / 2)
+                * self.temperature
+                * np.sqrt(self.temperature)
+            ) * ((SEA_LEVEL_TEMPERATURE + 110.4) / (self.temperature + 110.4))
+        return self._return_value(self._dynamic_viscosity)
+
+    @property
+    def partial_dynamic_viscosity_altitude(self) -> Union[float, Sequence[float]]:
+        """Dynamic viscosity in kg/m/s, computed using Sutherland equation"""
+        if self._partial_dynamic_viscosity_altitude is None:
+            self._partial_dynamic_viscosity_altitude = (
+                (
+                    0.000017894
+                    * SEA_LEVEL_TEMPERATURE ** (-3.0 / 2.0)
+                    * (SEA_LEVEL_TEMPERATURE + 110.4)
+                )
+                * np.sqrt(self.temperature)
+                * (0.5 * self.temperature + 165.6)
+                / (self.temperature + 110.4) ** 2.0
+                * self.partial_temperature_altitude
+            )
+        return self._return_value(self._partial_dynamic_viscosity_altitude)
 
     @property
     def kinematic_viscosity(self) -> Union[float, Sequence[float]]:
         """Kinematic viscosity in m2/s."""
         if self._kinematic_viscosity is None:
-            self._kinematic_viscosity = (
-                (0.000017894 * (self.temperature / SEA_LEVEL_TEMPERATURE) ** (3 / 2))
-                * ((SEA_LEVEL_TEMPERATURE + 110.4) / (self.temperature + 110.4))
-            ) / self.density
+            self._kinematic_viscosity = self.dynamic_viscosity / self.density
         return self._return_value(self._kinematic_viscosity)
+
+    @property
+    def partial_kinematic_viscosity_altitude(self) -> Union[float, Sequence[float]]:
+        """Kinematic viscosity in m2/s."""
+        if self._partial_kinematic_viscosity_altitude is None:
+            self._partial_kinematic_viscosity_altitude = (
+                self.partial_dynamic_viscosity_altitude * self.density
+                - self.dynamic_viscosity * self.partial_density_altitude
+            ) / self.density**2.0
+        return self._return_value(self._partial_kinematic_viscosity_altitude)
 
     @property
     def mach(self) -> Union[float, Sequence[float]]:
