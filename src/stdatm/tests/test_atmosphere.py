@@ -21,6 +21,7 @@ from scipy.constants import foot
 
 from ..atmosphere import Atmosphere, AtmosphereSI
 
+
 def test_atmosphere():
     """Tests properties of Atmosphere class."""
     # Altitudes in meters.
@@ -33,43 +34,43 @@ def test_atmosphere():
     # 1.81206e-5 for dynamic viscosity, though ISA assumption is 1.7894e-5.
     expectations = np.array(
         [
-            (0, 0, 288.15, 1.225, 101325, 1.460e-05, 1.789e-5, 340.29),
-            (500, 0, 284.90, 1.1673, 95461, 1.519e-05, 1.773e-05, 338.37),
-            (1000, 0, 281.65, 1.1117, 89874, 1.581e-05, 1.757e-05, 336.43),
-            (1500, 0, 278.40, 1.0581, 84556, 1.646e-05, 1.741e-05, 334.49),
-            (2000, 0, 275.15, 1.0065, 79495, 1.714e-05, 1.725e-05, 332.53),
-            (2500, 0, 271.90, 0.9569, 74682, 1.787e-05, 1.709e-05, 330.56),
-            (3000, 0, 268.65, 0.9091, 70108, 1.863e-05, 1.693e-05, 328.58),
-            (3500, 0, 265.40, 0.8632, 65764, 1.943e-05, 1.677e-05, 326.58),
-            (4000, 0, 262.15, 0.8191, 61640, 2.028e-05, 1.660e-05, 324.58),
-            (4500, 0, 258.90, 0.7768, 57728, 2.117e-05, 1.644e-05, 322.56),
-            (5000, 0, 255.65, 0.7361, 54020, 2.211e-05, 1.627e-05, 320.53),
-            (5500, 0, 252.40, 0.6971, 50506, 2.311e-05, 1.611e-05, 318.48),
-            (6000, 0, 249.15, 0.6597, 47181, 2.417e-05, 1.594e-05, 316.43),
-            (6500, 0, 245.90, 0.6238, 44034, 2.529e-05, 1.577e-05, 314.36),
-            (7000, 0, 242.65, 0.5895, 41060, 2.648e-05, 1.560e-05, 312.27),
-            (7500, 0, 239.40, 0.5566, 38251, 2.773e-05, 1.543e-05, 310.17),
-            (8000, 0, 236.15, 0.5252, 35599, 2.906e-05, 1.526e-05, 308.06),
-            (8500, 0, 232.90, 0.4951, 33099, 3.048e-05, 1.509e-05, 305.93),
-            (9000, 0, 229.65, 0.4663, 30742, 3.199e-05, 1.491e-05, 303.79),
-            (9500, 0, 226.40, 0.4389, 28523, 3.359e-05, 1.474e-05, 301.63),
-            (10000, 0, 223.15, 0.4127, 26436, 3.530e-05, 1.456e-05, 299.46),
-            (10500, 0, 219.90, 0.3877, 24474, 3.712e-05, 1.439e-05, 297.27),
-            (11000, 0, 216.65, 0.3639, 22632, 3.905e-05, 1.421e-05, 295.07),
-            (12000, 0, 216.65, 0.3108, 19330, 4.573e-05, 1.421e-05, 295.07),
-            (13000, 0, 216.65, 0.2655, 16510, 5.353e-05, 1.421e-05, 295.07),
-            (14000, 0, 216.65, 0.2268, 14101, 6.266e-05, 1.421e-05, 295.07),
-            (15000, 0, 216.65, 0.1937, 12044, 7.337e-05, 1.421e-05, 295.07),
-            (16000, 0, 216.65, 0.1654, 10287, 8.592e-05, 1.421e-05, 295.07),
-            (17000, 0, 216.65, 0.1413, 8786, 1.006e-04, 1.421e-05, 295.07),
-            (18000, 0, 216.65, 0.1207, 7505, 1.177e-04, 1.421e-05, 295.07),
-            (19000, 0, 216.65, 0.1031, 6410, 1.378e-04, 1.421e-05, 295.07),
-            (20000, 0, 216.65, 0.088, 5475, 1.615e-04, 1.421e-05, 295.07),
-            (0, 10, 298.15, 1.1839, 101325, 1.5527e-5, 1.838e-05, 346.15),
-            (1000, 10, 291.65, 1.0735, 89875, 1.6829e-5, 1.806e-05, 342.36),
-            (3000, 10, 278.65, 0.87650, 70108, 1.9877e-5, 1.742e-05, 334.64),
-            (10000, 10, 233.15, 0.39500, 26436, 3.8106e-05, 1.505e-05, 306.10),
-            (14000, 10, 226.65, 0.2167, 14102, 6.7808e-05, 1.469e-05, 301.80),
+            (0, 0, 288.15, 1.225, 101325, 1.460e-05, 340.29),
+            (500, 0, 284.90, 1.1673, 95461, 1.519e-05, 338.37),
+            (1000, 0, 281.65, 1.1117, 89874, 1.581e-05, 336.43),
+            (1500, 0, 278.40, 1.0581, 84556, 1.646e-05, 334.49),
+            (2000, 0, 275.15, 1.0065, 79495, 1.714e-05, 332.53),
+            (2500, 0, 271.90, 0.9569, 74682, 1.787e-05, 330.56),
+            (3000, 0, 268.65, 0.9091, 70108, 1.863e-05, 328.58),
+            (3500, 0, 265.40, 0.8632, 65764, 1.943e-05, 326.58),
+            (4000, 0, 262.15, 0.8191, 61640, 2.028e-05, 324.58),
+            (4500, 0, 258.90, 0.7768, 57728, 2.117e-05, 322.56),
+            (5000, 0, 255.65, 0.7361, 54020, 2.211e-05, 320.53),
+            (5500, 0, 252.40, 0.6971, 50506, 2.311e-05, 318.48),
+            (6000, 0, 249.15, 0.6597, 47181, 2.417e-05, 316.43),
+            (6500, 0, 245.90, 0.6238, 44034, 2.529e-05, 314.36),
+            (7000, 0, 242.65, 0.5895, 41060, 2.648e-05, 312.27),
+            (7500, 0, 239.40, 0.5566, 38251, 2.773e-05, 310.17),
+            (8000, 0, 236.15, 0.5252, 35599, 2.906e-05, 308.06),
+            (8500, 0, 232.90, 0.4951, 33099, 3.048e-05, 305.93),
+            (9000, 0, 229.65, 0.4663, 30742, 3.199e-05, 303.79),
+            (9500, 0, 226.40, 0.4389, 28523, 3.359e-05, 301.63),
+            (10000, 0, 223.15, 0.4127, 26436, 3.530e-05, 299.46),
+            (10500, 0, 219.90, 0.3877, 24474, 3.712e-05, 297.27),
+            (11000, 0, 216.65, 0.3639, 22632, 3.905e-05, 295.07),
+            (12000, 0, 216.65, 0.3108, 19330, 4.573e-05, 295.07),
+            (13000, 0, 216.65, 0.2655, 16510, 5.353e-05, 295.07),
+            (14000, 0, 216.65, 0.2268, 14101, 6.266e-05, 295.07),
+            (15000, 0, 216.65, 0.1937, 12044, 7.337e-05, 295.07),
+            (16000, 0, 216.65, 0.1654, 10287, 8.592e-05, 295.07),
+            (17000, 0, 216.65, 0.1413, 8786, 1.006e-04, 295.07),
+            (18000, 0, 216.65, 0.1207, 7505, 1.177e-04, 295.07),
+            (19000, 0, 216.65, 0.1031, 6410, 1.378e-04, 295.07),
+            (20000, 0, 216.65, 0.088, 5475, 1.615e-04, 295.07),
+            (0, 10, 298.15, 1.1839, 101325, 1.5527e-5, 346.15),
+            (1000, 10, 291.65, 1.0735, 89875, 1.6829e-5, 342.36),
+            (3000, 10, 278.65, 0.87650, 70108, 1.9877e-5, 334.64),
+            (10000, 10, 233.15, 0.39500, 26436, 3.8106e-05, 306.10),
+            (14000, 10, 226.65, 0.2167, 14102, 6.7808e-05, 301.80),
         ],
         dtype=[
             ("alt", "f8"),
@@ -77,8 +78,7 @@ def test_atmosphere():
             ("T", "f4"),
             ("rho", "f4"),
             ("P", "f4"),
-            ("kin_visc", "f4"),
-            ("dyn_visc", "f4"),
+            ("visc", "f4"),
             ("SoS", "f4"),
         ],
     )
@@ -91,8 +91,7 @@ def test_atmosphere():
         assert values["T"] == pytest.approx(atm.temperature, rel=1e-4)
         assert values["rho"] == pytest.approx(atm.density, rel=1e-3)
         assert values["P"] == pytest.approx(atm.pressure, rel=1e-4)
-        assert values["kin_visc"] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
-        assert values["dyn_visc"] == pytest.approx(atm.dynamic_viscosity, rel=1e-2)
+        assert values["visc"] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
         assert values["SoS"] == pytest.approx(atm.speed_of_sound, rel=1e-3)
 
         # Checking with altitude provided as one-element list
@@ -102,8 +101,7 @@ def test_atmosphere():
         assert values["T"] == pytest.approx(atm.temperature, rel=1e-4)
         assert values["rho"] == pytest.approx(atm.density, rel=1e-3)
         assert values["P"] == pytest.approx(atm.pressure, rel=1e-4)
-        assert values["kin_visc"] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
-        assert values["dyn_visc"] == pytest.approx(atm.dynamic_viscosity, rel=1e-2)
+        assert values["visc"] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
         assert values["SoS"] == pytest.approx(atm.speed_of_sound, rel=1e-3)
 
     for delta_t in [0, 10]:
@@ -117,8 +115,7 @@ def test_atmosphere():
         assert expectations["T"][idx] == pytest.approx(atm.temperature, rel=1e-4)
         assert expectations["rho"][idx] == pytest.approx(atm.density, rel=1e-3)
         assert expectations["P"][idx] == pytest.approx(atm.pressure, rel=1e-4)
-        assert expectations["kin_visc"][idx] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
-        assert expectations["dyn_visc"][idx] == pytest.approx(atm.dynamic_viscosity, rel=1e-2)
+        assert expectations["visc"][idx] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
         assert expectations["SoS"][idx] == pytest.approx(atm.speed_of_sound, rel=1e-3)
         # Additional check for get_altitude in meters
         assert expectations["alt"][idx] == pytest.approx(
@@ -132,8 +129,7 @@ def test_atmosphere():
         assert expectations["T"][idx] == pytest.approx(atm.temperature, rel=1e-4)
         assert expectations["rho"][idx] == pytest.approx(atm.density, rel=1e-3)
         assert expectations["P"][idx] == pytest.approx(atm.pressure, rel=1e-4)
-        assert expectations["kin_visc"][idx] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
-        assert expectations["dyn_visc"][idx] == pytest.approx(atm.dynamic_viscosity, rel=1e-2)
+        assert expectations["visc"][idx] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
         assert expectations["SoS"][idx] == pytest.approx(atm.speed_of_sound, rel=1e-3)
         # Additional check for get_altitude in feet
         assert expectations["alt"][idx] / foot == pytest.approx(atm.get_altitude(), rel=1e-3)
@@ -143,8 +139,7 @@ def test_atmosphere():
         assert expectations["T"][idx] == pytest.approx(atm.temperature, rel=1e-4)
         assert expectations["rho"][idx] == pytest.approx(atm.density, rel=1e-3)
         assert expectations["P"][idx] == pytest.approx(atm.pressure, rel=1e-4)
-        assert expectations["kin_visc"][idx] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
-        assert expectations["dyn_visc"][idx] == pytest.approx(atm.dynamic_viscosity, rel=1e-2)
+        assert expectations["visc"][idx] == pytest.approx(atm.kinematic_viscosity, rel=1e-2)
         assert expectations["SoS"][idx] == pytest.approx(atm.speed_of_sound, rel=1e-3)
         # Additional check for altitude property
         assert expectations["alt"][idx] == pytest.approx(atm.altitude, rel=1e-3)
@@ -363,87 +358,11 @@ def test_performances_pressure_array(atmosphere1, benchmark):
     benchmark(func)
 
 
-def test_performances_partial_pressure_altitude_array(atmosphere1, benchmark):
-    def func():
-        _ = atmosphere1.partial_pressure_altitude
-
-    benchmark(func)
-
-
-def test_verify_partial_pressure_altitude(atmosphere1, atmosphere2):
-    analytical_diff = atmosphere1.partial_pressure_altitude
-    finite_diff = (atmosphere2.pressure - atmosphere1.pressure) / STEP
-
-    # Pressure does not have the same order of magnitude as in temperature so we increase a little
-    # bit the tolerance.
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-4, atol=1e-5)
-
-
-def test_verify_partial_pressure_altitude_in_feet(atmosphere_ft_1, atmosphere_ft_2):
-    analytical_diff = atmosphere_ft_1.partial_pressure_altitude
-    finite_diff = (atmosphere_ft_2.pressure - atmosphere_ft_1.pressure) / STEP_FOOT
-
-    # Pressure does not have the same order of magnitude as in temperature so we increase a little
-    # bit the tolerance.
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-4, atol=1e-5)
-
-
 def test_performances_density_array(atmosphere1, benchmark):
     def func():
         _ = atmosphere1.density
 
     benchmark(func)
-
-
-def test_performances_partial_density_altitude_array(atmosphere1, benchmark):
-    def func():
-        _ = atmosphere1.partial_density_altitude
-
-    benchmark(func)
-
-
-def test_verify_partial_density_altitude(atmosphere1, atmosphere2):
-    analytical_diff = atmosphere1.partial_density_altitude
-    finite_diff = (atmosphere2.density - atmosphere1.density) / STEP
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
-
-
-def test_verify_partial_density_altitude_in_feet(atmosphere_ft_1, atmosphere_ft_2):
-    analytical_diff = atmosphere_ft_1.partial_density_altitude
-    finite_diff = (atmosphere_ft_2.density - atmosphere_ft_1.density) / STEP_FOOT
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
-
-
-def test_performances_dynamic_viscosity_array(atmosphere1, benchmark):
-    def func():
-        _ = atmosphere1.dynamic_viscosity
-
-    benchmark(func)
-
-
-def test_performances_partial_dynamic_viscosity_altitude_array(atmosphere1, benchmark):
-    def func():
-        _ = atmosphere1.partial_dynamic_viscosity_altitude
-
-    benchmark(func)
-
-
-def test_verify_partial_dynamic_viscosity_altitude(atmosphere1, atmosphere2):
-    analytical_diff = atmosphere1.partial_dynamic_viscosity_altitude
-    finite_diff = (atmosphere2.dynamic_viscosity - atmosphere1.dynamic_viscosity) / STEP
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
-
-
-def test_verify_partial_dynamic_viscosity_altitude_in_feet(atmosphere_ft_1, atmosphere_ft_2):
-    analytical_diff = atmosphere_ft_1.partial_dynamic_viscosity_altitude
-    finite_diff = (
-        atmosphere_ft_2.dynamic_viscosity - atmosphere_ft_1.dynamic_viscosity
-    ) / STEP_FOOT
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
 
 
 def test_performances_kinematic_viscosity_array(atmosphere1, benchmark):
@@ -453,60 +372,11 @@ def test_performances_kinematic_viscosity_array(atmosphere1, benchmark):
     benchmark(func)
 
 
-def test_performances_partial_kinematic_viscosity_altitude_array(atmosphere1, benchmark):
-    def func():
-        _ = atmosphere1.partial_kinematic_viscosity_altitude
-
-    benchmark(func)
-
-
-def test_verify_partial_kinematic_viscosity_altitude(atmosphere1, atmosphere2):
-    analytical_diff = atmosphere1.partial_kinematic_viscosity_altitude
-    finite_diff = (atmosphere2.kinematic_viscosity - atmosphere1.kinematic_viscosity) / STEP
-
-    # Here the computation of partials via finite difference takes as much times as the computation
-    # using analytical differentiation. However, in OpenMDAO it is done differently, in the sense
-    # that is done for each index among those defined using sparse_partials. So in the end it will
-    # be faster
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
-
-
-def test_verify_partial_kinematic_viscosity_altitude_in_feet(atmosphere_ft_1, atmosphere_ft_2):
-    analytical_diff = atmosphere_ft_1.partial_kinematic_viscosity_altitude
-    finite_diff = (
-        atmosphere_ft_2.kinematic_viscosity - atmosphere_ft_1.kinematic_viscosity
-    ) / STEP_FOOT
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
-
-
 def test_performances_speed_of_sound_array(atmosphere1, benchmark):
     def func():
         _ = atmosphere1.speed_of_sound
 
     benchmark(func)
-
-
-def test_performances_partial_speed_of_sound_altitude_array(atmosphere1, benchmark):
-    def func():
-        _ = atmosphere1.partial_speed_of_sound_altitude
-
-    benchmark(func)
-
-
-def test_verify_partial_speed_of_sound_altitude(atmosphere1, atmosphere2):
-    analytical_diff = atmosphere1.partial_speed_of_sound_altitude
-    finite_diff = (atmosphere2.speed_of_sound - atmosphere1.speed_of_sound) / STEP
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
-
-
-def test_verify_partial_speed_of_sound_altitude_in_feet(atmosphere_ft_1, atmosphere_ft_2):
-    analytical_diff = atmosphere_ft_1.partial_speed_of_sound_altitude
-    finite_diff = (atmosphere_ft_2.speed_of_sound - atmosphere_ft_1.speed_of_sound) / STEP_FOOT
-
-    assert_allclose(analytical_diff, finite_diff, rtol=1e-6, atol=1e-6)
 
 
 def test_performances_TAS_1_array(atmosphere1, benchmark):
@@ -571,7 +441,6 @@ def test_performances_reask_array(atmosphere1, benchmark):
         _ = atmosphere1.temperature
         _ = atmosphere1.pressure
         _ = atmosphere1.density
-        _ = atmosphere1.dynamic_viscosity
         _ = atmosphere1.kinematic_viscosity
         _ = atmosphere1.speed_of_sound
         _ = atmosphere1.true_airspeed
@@ -589,7 +458,6 @@ def test_performances_loop_static(altitude, benchmark):
             _ = atm.temperature
             _ = atm.pressure
             _ = atm.density
-            _ = atm.dynamic_viscosity
             _ = atm.kinematic_viscosity
             _ = atm.speed_of_sound
 
